@@ -1,5 +1,5 @@
 #! /bin/bash
-
+PROGRESS=0
 #for all files called SET.xml in subfolders
 shopt -s nullglob
 for FILE in $(find -name 'SET.xml')
@@ -8,4 +8,7 @@ do
 xmlstarlet sel -t -v "//XML" -n $FILE >b64.bit && base64 --decode b64.bit > decoded.bit && xmlstarlet ed -d "//Page16" decoded.bit > lpa.bit && base64 lpa.bit >encoded.bit
 xmlstarlet ed --inplace -u "//XML" -v encoded.bit $FILE
 rm *.bit
+echo "$FILE updated"
+((PROGRESS++))
 done
+echo "$PROGRESS files processed"
